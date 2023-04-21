@@ -1,5 +1,6 @@
 covariate_river <- function(x, river,
-                            categorical = TRUE){
+                            categorical = TRUE,
+                            overwrite = FALSE){
 
   if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to covariate_river.')
@@ -27,7 +28,9 @@ covariate_river <- function(x, river,
       covariates <- matrix(0,river$SC$nNodes,length(classes))
       for (ind in 1:length(classes)){
         for (i in 1:river$SC$nNodes){
-          covariates[i,ind] <- sum(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]]==classes[ind])/length(river$SC$toFD[[i]])
+          num <- sum(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]]==classes[ind], na.rm=TRUE)
+          den <- sum(!is.na(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]]))
+          covariates[i,ind] <- num/den
         }
       }
       locCov <- data.frame(covariates)
@@ -35,7 +38,7 @@ covariate_river <- function(x, river,
     } else {
       covariate <- numeric(river$SC$nNodes)
       for (i in 1:river$SC$nNodes){
-        covariate[i] <- mean(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]])
+        covariate[i] <- mean(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]], na.rm=TRUE)
       }
       locCov <- data.frame(covariate)
       names(locCov) <- names(r3)[val]
@@ -52,7 +55,7 @@ covariate_river <- function(x, river,
     upsCov <- data.frame(covariatesUps)
     names(upsCov) <- names(locCov)
 
-    if (is.null(river$SC$locCov)){
+    if (is.null(river$SC$locCov) | overwrite){
       river$SC[["locCov"]] <- locCov
     } else {
       tmp <- river$SC[["locCov"]]
@@ -61,7 +64,7 @@ covariate_river <- function(x, river,
       river$SC$locCov <- df
     }
 
-    if (is.null(river$SC$upsCov)){
+    if (is.null(river$SC$upsCov) | overwrite){
       river$SC[["upsCov"]] <- upsCov
     } else {
       tmp <- river$SC[["upsCov"]]

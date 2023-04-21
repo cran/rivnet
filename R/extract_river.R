@@ -12,6 +12,11 @@ extract_river <- function(outlet,
                            displayUpdates=FALSE,
                            src="aws"){
 
+  if (!is.null(EPSG)){
+  if ( EPSG==4326){
+    warning("You are using the WGS84 geographic coordinate system.
+    It is recommended that you use a projected coordinate system.")}}
+
   if (!is.null(DEM)){
     elev <- rast(DEM)
     ext <- as.vector(ext(elev))}
@@ -112,19 +117,21 @@ extract_river <- function(outlet,
   ssa_cont <- classify(ssa,matrix(c(NA,NA,-1e6,1,Inf,1e6),2,3,byrow=T))
   cont <- as.contour(ssa_cont,levels=c(0,1e6))
   cont <- subset(cont, cont$level==0) # pick most external contour
-  XContour <-  crds(cont)[,1]
-  YContour <-  crds(cont)[,2]
+  XC <-  crds(cont)[,1]
+  YC <-  crds(cont)[,2]
   # patch for irregular contour: cut part of a contour that is unconnected to the rest
-  ind_cut <- which(abs(diff(XContour))>10*cellsize | abs(diff(YContour))>10*cellsize)
-  if (length(ind_cut)>0){
-    XContour <- XContour[1:ind_cut]
-    YContour <- YContour[1:ind_cut]
+  ind_cut <- which(abs(diff(XC))>10*cellsize | abs(diff(YC))>10*cellsize)
+  XContour <- YContour <- list()
+  ind_cut <- c(0,ind_cut,length(XC))
+  for (i in 1:(length(ind_cut)-1)){
+    XContour[[i]] <- XC[(ind_cut[i]+1):ind_cut[i+1]]
+    YContour[[i]] <- YC[(ind_cut[i]+1):ind_cut[i+1]]
   }
-
 
   if (showPlot==T){
     plot(ad8,col=hcl.colors(1000))
-    lines(XContour,YContour,col="magenta")
+    for (i in 1:length(XContour)){
+    lines(XContour[[i]],YContour[[i]],col="magenta")}
     title(sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
   }
 
@@ -185,6 +192,11 @@ extract_river <- function(outlet,
     W_FD[ind] <- 1
     rm(ind)
     Outlet_FD <- which(downNode_FD==0)
+    if (length(Outlet_FD) != dim(outlet)[1]){
+      stop("The number of identified outlets is not equal to the number of inputted outlets.
+       Some of the extracted catchments might be nested.
+       If this is the case, run extract_river separately for each catchment.")
+    }
     # reassign outlet order
     if (length(Outlet_FD)>1){
       ind_out <- numeric(length(Outlet_FD))
@@ -235,8 +247,8 @@ extract_river <- function(outlet,
         YContour <- c(YContour, list(list(YCont)))
       }
     } else {
-      XContour <- list(list(XContour))
-      YContour <- list(list(YContour))
+      XContour <- list(XContour)
+      YContour <- list(YContour)
     }
 
     if (!quiet){message("Creation of river object... 100.0% \n", appendLF = FALSE)}
@@ -261,6 +273,7 @@ setClass("river",
          slots= c(FD="list", dimX="numeric", dimY="numeric", cellsize="numeric", nOutlet="numeric",
                   periodicBoundaries="logical", expEnergy="numeric", coolingRate="numeric",
                   typeInitialState="character", nIter="numeric", initialNoCoolingPhase="numeric",
+                  energy="numeric", exitFlag="numeric", N4="list",N8="list", nIterSequence="numeric",
                   energyInit="numeric", xllcorner="numeric", yllcorner="numeric",
                   CM="list",RN="list",AG="list",OptList="list",SC="list",thrA="numeric",
                   slope0="numeric", zMin="numeric",streamOrderType="character",maxReachLength="numeric",
@@ -314,6 +327,17 @@ setMethod("names",signature=c(x="river"),
 setMethod("$<-",signature=c(x="river"),
           function(x,name,value){
             slot(x, name) <- value
+            return(x)
+          })
+
+setMethod("[[",c("river","character","missing"),
+          function(x,i){
+            slot(x,i)
+          })
+
+setMethod("[[<-",signature=c("river","character","missing"),
+          function(x,i,value){
+            slot(x, i) <- value
             return(x)
           })
 

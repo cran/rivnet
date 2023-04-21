@@ -1,7 +1,7 @@
 Package: rivnet
 Type: Package
 Title: Extract and Analyze Rivers from Elevation Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     c(person("Luca", "Carraro", 
 	email = "luca.carraro@hotmail.it", role = c("cre", "aut")),
@@ -15,16 +15,18 @@ Description: Seamless extraction of river networks from digital
 	Digital Elevation Models), thus interfacing with the 'traudem' 
 	package. Resulting river networks are compatible with functions 
 	from the 'OCNet' package. 
-Imports: spam, raster, sf, terra, traudem, elevatr, OCNet, methods
+Imports: spam, raster, sf, terra, traudem, elevatr, OCNet (>= 1.0.0),
+        methods, Rcpp (>= 1.0.9)
 License: MIT + file LICENSE
 Encoding: UTF-8
 Suggests: knitr, rmarkdown, bookdown
 VignetteBuilder: knitr
 URL: https://lucarraro.github.io/rivnet/
-NeedsCompilation: no
-Packaged: 2023-03-01 08:30:59 UTC; carrarlu
+LinkingTo: Rcpp
+NeedsCompilation: yes
+Packaged: 2023-04-21 07:42:59 UTC; carrarlu
 Author: Luca Carraro [cre, aut],
   University of Zurich [cph, fnd]
 Maintainer: Luca Carraro <luca.carraro@hotmail.it>
 Repository: CRAN
-Date/Publication: 2023-03-01 20:00:02 UTC
+Date/Publication: 2023-04-21 10:10:03 UTC
