@@ -43,6 +43,7 @@ extract_river <- function(outlet,
 
   quiet <- !displayUpdates
 
+  t0 <- Sys.time()
   if (is.null(DEM)){
 
   # use elevatr to download DEM
@@ -50,6 +51,13 @@ extract_river <- function(outlet,
   r <- rast()
   crs(r) <- paste0("epsg:",EPSG)
   crs_str <- crs(r)
+
+  # override curl::has_internet() check by get_elev_raster
+  op <- get("has_internet_via_proxy", environment(curl::has_internet)) # old value
+  # check for internet
+  np <- !is.null(curl::nslookup("r-project.org", error = FALSE))
+  assign("has_internet_via_proxy", np, environment(curl::has_internet))
+  on.exit(assign("has_internet_via_proxy", op, environment(curl::has_internet)))
 
   if (quiet){
     elev <- suppressMessages(get_elev_raster(locations = loc.df, prj = crs_str, z = z,
@@ -62,6 +70,7 @@ extract_river <- function(outlet,
   }
 
   writeRaster(elev, filename=file.path(test_dir, "DEM.tif"), overwrite=TRUE) # write elevation raster to temporary directory
+  t1 <- Sys.time()
 
   # apply TauDEM functions
   # Remove pits
@@ -86,7 +95,12 @@ extract_river <- function(outlet,
                                        n_processes = n_processes,
                                        quiet = quiet)
 
-  p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y")) # crs=EPSG
+  if (!is.null(EPSG)){
+  p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"), crs=EPSG) # crs=EPSG
+  } else {
+    p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"))
+  }
+
   out_shp <- file.path(test_dir,"ApproxOutlet.shp")
   sf::st_write(p.sf, out_shp, driver="ESRI Shapefile", quiet=quiet, append=FALSE)
 
@@ -111,6 +125,7 @@ extract_river <- function(outlet,
 
   shp <- sf::st_read(out_moved.shp,quiet=T)
   out_moved <- sf::st_coordinates(shp)
+  t2 <- Sys.time()
 
   # create catchment contour
   cellsize <- sqrt(prod(res(fel)))
@@ -214,7 +229,8 @@ extract_river <- function(outlet,
     slot(newW, "dimension", check = FALSE) <- W_FD@dimension
     W_FD <- newW
 
-    pl <- initial_permutation_rev(downNode_rev, Outlet_FD)
+    #pl <- initial_permutation_rev(downNode_rev, Outlet_FD)
+    pl <- init_perm_rev_cpp(downNode_rev, Outlet_FD)
     pl <- as.integer(pl$perm)
 
     toCM <- numeric(Nnodes_FD)
@@ -264,9 +280,15 @@ extract_river <- function(outlet,
     river_S4 <- new("river")
     fieldnames <- names(river)
     for (i in 1:length(fieldnames)){slot(river_S4, fieldnames[i]) <- river[[fieldnames[i]]]}
-
-    invisible(river_S4)
   }
+  t3 <- Sys.time()
+  if (displayUpdates){
+    message("extract_river has finished. \n",appendLF = FALSE)
+    message(sprintf("Time for DEM download: %.1f s \n",difftime(t1,t0,units="secs")),appendLF = FALSE)
+    message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,units="secs")),appendLF = FALSE)
+    message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,units="secs")),appendLF = FALSE)
+  }
+  if (as.river==TRUE){invisible(river_S4)}
 }
 
 setClass("river",
@@ -384,13 +406,11 @@ neigh <- function(dir) {
   return(mov)
 }
 
-
+# deprecated
 initial_permutation_rev <- function(downNode_rev, Outlet){
-
   nNodes <- length(downNode_rev)
   NodesToExplore <- Outlet # start from outlets
   reverse_perm <- numeric(nNodes) # build permutation vector from outlets to headwaters, then flip it
-
   k <- 0
   while (length(NodesToExplore)>0){ # continue until all the network has been explored
     k <- k + 1
@@ -408,11 +428,8 @@ initial_permutation_rev <- function(downNode_rev, Outlet){
       UpNodes <- downNode_rev[[node]]
     }
   }
-
   perm <- reverse_perm[nNodes:1] # flip permutation
-
   OutList = list(perm=perm,noDAG=0)
-
   invisible(OutList)
 }
 
