@@ -1,7 +1,7 @@
-e2eda595d5fef683d442bac662034516 *DESCRIPTION
+731475adf39dc2abd2eb3daac2161d34 *DESCRIPTION
 e094de58e303c49182332c001249b0ca *LICENSE
-8a772cbdb8b9d612b7d377e275ca50a6 *NAMESPACE
-e77dd272a9dea981164ad8fac014c012 *NEWS.md
+4afccb25b4756e2739ec894a3bc7b574 *NAMESPACE
+1945e4e893c934938c6f5e679ea632ad *NEWS.md
 77e9d99cba50e6df6e139cd40fd3ecb3 *R/RcppExports.R
 364a1aad1106b5b2ed0caddfab256c48 *R/aggregate_river.R
 a5d340df1d60587162f497c8ce197c7b *R/covariate_river.R
@@ -10,12 +10,13 @@ a5d340df1d60587162f497c8ce197c7b *R/covariate_river.R
 9566231e6d6066d043c74e363dfc243e *R/locate_site.R
 9eeb26a9ad5c87dfe728b24875fbf4ac *R/path_velocities_river.R
 e7941384b8ca3109257653f8c0d4af73 *R/paths_river.R
+52709374a3c5cdded1bab97edd33bfe6 *R/river_to_AEM.R
 d62ea16fa48775db297a6798a8243d15 *R/river_to_SSN.R
 80fe4a45c2138e1977ece53ec4a82171 *R/river_to_igraph.R
-b0c5a35690d0588fabb0e627abcf52f7 *build/vignette.rds
+95012a9b8b614591d388c8d1730f1033 *build/vignette.rds
 4561d33bf0ac0b1fe3ea77c80efe45bb *inst/doc/rivnet.R
 c291d30ecf5cf50ec6302b57bee1c22f *inst/doc/rivnet.Rmd
-fefbc78e56bf3b89679c62bc42f1643b *inst/doc/rivnet.html
+4431fcb693081a75267219e50346fe41 *inst/doc/rivnet.html
 d441e20773013a6a25ada7bb937ac696 *inst/extdata/landcover.tif
 5f9502c975dd15caf0e4f2f1f1344a86 *inst/extdata/temperature.tif
 b312aa023ea62922a786e62cd98118a5 *inst/extdata/wigger.tif
@@ -27,7 +28,8 @@ ea069204a0dc704873acd4ac793c6472 *man/covariate_river.Rd
 e19dc159f3d9159e02853af1262ea186 *man/path_velocities_river.Rd
 2e020b7c6f9cb5f63a3f52aa4e674d5b *man/paths_river.Rd
 54a14b269a5882bdd5a0e80bc8ae9440 *man/plot.Rd
-1f119bdc3458aa41bb5f61776f523127 *man/river-class.Rd
+6be26233f12d93c483c88666f2f44d66 *man/river-class.Rd
+5cb664691e069f47c76013bce92c9706 *man/river_to_AEM.Rd
 e15a9a950bf96b788328872e1df1d308 *man/river_to_SSN.Rd
 4ac69634df4ea147c0f6fdab7116f107 *man/river_to_igraph.Rd
 a0d62e8e5ea28e70f520053c209387f9 *man/rivnet-package.Rd
