@@ -49,7 +49,6 @@ plot(river)
 points_colorscale(river$AG$X[samplingSites], river$AG$Y[samplingSites],
                    river$AG$A[samplingSites])
 
-\donttest{
 # 2) change color palette
 plot(river)
 points_colorscale(river$AG$X[samplingSites], river$AG$Y[samplingSites],
@@ -87,6 +86,5 @@ points_colorscale(river$AG$X[samplingSites], river$AG$Y[samplingSites],
             data.frame(river$AG$A[samplingSites], river$AG$Z[samplingSites]),
             col.palette = terrain.colors(1000),
             lwd = 4, add.col.legend = TRUE)
-}
 \dontshow{\}) # examplesIf}
 }
