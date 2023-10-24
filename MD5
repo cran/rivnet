@@ -1,7 +1,7 @@
-ca3ece3f427d08dac8ba321507cb4fc2 *DESCRIPTION
+cb60bc295fc0520d9a82036b145d3cf6 *DESCRIPTION
 e094de58e303c49182332c001249b0ca *LICENSE
 dbf027071b78ef5c5cbb24cc85cb92f0 *NAMESPACE
-da6c7c050af65ba161f7ed7b1d0b70c5 *NEWS.md
+7e2e4140575468b5a582a587088c10bf *NEWS.md
 77e9d99cba50e6df6e139cd40fd3ecb3 *R/RcppExports.R
 364a1aad1106b5b2ed0caddfab256c48 *R/aggregate_river.R
 a5d340df1d60587162f497c8ce197c7b *R/covariate_river.R
@@ -15,6 +15,7 @@ e7941384b8ca3109257653f8c0d4af73 *R/paths_river.R
 d62ea16fa48775db297a6798a8243d15 *R/river_to_SSN.R
 80fe4a45c2138e1977ece53ec4a82171 *R/river_to_igraph.R
 02dad6f22f4aa304b1bbe8e9a111bdfd *build/vignette.rds
+42ba612ac6339a867d37e61c01f11133 *inst/CITATION
 4561d33bf0ac0b1fe3ea77c80efe45bb *inst/doc/rivnet.R
 c291d30ecf5cf50ec6302b57bee1c22f *inst/doc/rivnet.Rmd
 fefbc78e56bf3b89679c62bc42f1643b *inst/doc/rivnet.html
