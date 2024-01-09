@@ -8,10 +8,10 @@ knitr::opts_chunk$set(
 suppressPackageStartupMessages(library(rivnet))
 suppressPackageStartupMessages(library(traudem))
 
-## ----eval=FALSE---------------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  install.packages("rivnet")
 
-## ----eval=FALSE---------------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
 #  devtools::install_github("lucarraro/rivnet")
 
 ## ----overview, echo=FALSE, fig.cap="Overview of `rivnet` and `OCNet` functions. `aggregate_river`, `paths_river`, `river_to_igraph` and `river_to_SSN` are aliases for `aggregate_OCN`, `paths_OCN`, `OCN_to_igraph` and `OCN_to_SSN`, respectively; `path_velocities_river` requires `paths_river` and one between `hydro_river` and `rivergeometry_OCN`.", out.width = '80%'----
