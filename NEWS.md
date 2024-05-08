@@ -1,3 +1,9 @@
+# rivnet 0.4.2
+
+## Minor changes
+
+- Dependency to `traudem` >= 1.0.3 is added.
+
 # rivnet 0.4.1
 
 ## Minor changes
