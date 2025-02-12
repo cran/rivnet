@@ -1,7 +1,7 @@
 Package: rivnet
 Type: Package
 Title: Extract and Analyze Rivers from Elevation Data
-Version: 0.5.0
+Version: 0.6.0
 Authors@R: 
     c(person("Luca", "Carraro", 
 	email = "luca.carraro@hotmail.it", role = c("cre", "aut")),
@@ -27,9 +27,10 @@ URL: https://lucarraro.github.io/rivnet/
 BugReports: https://github.com/lucarraro/rivnet/issues
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2024-09-23 08:14:51 UTC; carrarlu
+Packaged: 2025-02-12 12:22:15 UTC; carrarlu
 Author: Luca Carraro [cre, aut],
   University of Zurich [cph, fnd]
 Maintainer: Luca Carraro <luca.carraro@hotmail.it>
+Depends: R (>= 3.5.0)
 Repository: CRAN
-Date/Publication: 2024-09-23 09:20:02 UTC
+Date/Publication: 2025-02-12 13:20:02 UTC
